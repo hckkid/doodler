@@ -1,0 +1,20 @@
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <h1 class="lead">Chat Room <small><strong><%= roomno %></strong></small></h1>
+    <ul class="list-group" id="messages_container"></ul>
+  </div>
+</div>
+<div style="position: fixed;bottom: 0;left: 0;width: 100%;padding: 25px 0;background: #fff;">
+  <div class="container">
+    <div class="row">
+      <form name="chatbox">
+        <label id="messages"></label>
+        <input type="text" placeholder="message" id="locMessage" name="message" />
+        <input type="hidden" name="roomno" id="roomno" value=<%= roomno %> />
+        <button type="submit">Send Message</button>
+      </form>
+  </div>
+</div>
+</div>
+<div name="remoteCanvases">
+</div>
