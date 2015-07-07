@@ -19,5 +19,13 @@ module.exports = {
 		var msg = req.param("message");
 		//console.log(sails.sockets.subscribers(room));
 		sails.sockets.broadcast(room,'chatmessage',msg);
+	},
+	dummy: function(req,res,next){
+		console.log("Dummy Testing");
+		sails.sockets.emit(req.socket,'message',"dummyMessage");
+	},
+	message: function(req,res,next){
+		console.log("A Message");
+		sails.sockets.broadcast(req.param("roomno"),'message',req.param("data"),req.socket);
 	}
 };

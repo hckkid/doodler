@@ -34,7 +34,7 @@ module.exports.routes = {
 
   '/': {
     view: 'static/index'
-  }
+  },
 
   /***************************************************************************
   *                                                                          *
@@ -45,5 +45,7 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
+
+  '/message': 'RoomController.message'
 
 };
