@@ -7,12 +7,102 @@ if (document.forms['chatbox']) {
     var the_form = document.forms['chatbox'];
     var container = $('#messages_container');
     var roomno = the_form.roomno.value;
+    var canvas = document.getElementById('lcanvas');
+    var ctx = canvas.getContext('2d');
+    ctx.lineWidth = '3';
+    var remoteCanvasContainer = $('#rcanvas');
+
     /**
     * Define Functions
     */
     io.socket.post('/room/join', {rand: roomno},
     function (data) {
     });
+
+    // create a flag
+    var isActive = false;
+
+    // array to collect coordinates
+    var plots = [];
+
+    function drawOnCanvas(plots) {
+      ctx.beginPath();
+      ctx.moveTo(plots[0].x, plots[0].y);
+
+      for(var i=1; i<plots.length; i++) {
+        ctx.lineTo(plots[i].x, plots[i].y);
+      }
+      ctx.stroke();
+    }
+
+    io.socket.on('joining',function(data){
+      console.log("joing");
+      console.log(data);
+      var html = "";
+      html += '<li class="inline-list-item"><canvas id="canvas'+data.id+'" width="200" height="200"></canvas></li>';
+      remoteCanvasContainer.append(html);
+      console.log(canvas.width);
+      console.log(canvas.height);
+      console.log(ctx.getImageData(0,0,canvas.width,canvas.height));
+      io.socket.post('/room/update',{to:data.id,img:ctx.getImageData(0,0,canvas.width,canvas.height)},function(data){console.log(data);});
+    });
+
+    io.socket.on('currentcanvases',function(data){
+      console.log("Got canvas");
+      console.log(data);
+      var html = "";
+      html += '<li class="inline-list-item"><canvas id="canvas'+data.from+'" width="200" height="200"></canvas></li>';
+      remoteCanvasContainer.append(html);
+      rcan = document.getElementById('canvas'+data.from);
+      rctx = rcan.getContext;
+      rctx.putImageData(data.img,0,0);
+      //io.socket.post('update',{to:data.id,img:ctx.getImageData(0,0,canvas.width,canvas.height)});
+      console.log("done");
+    });
+
+    function drawOnCanvasId(id,plots) {
+      var remotecanvas = document.getElementById('canvas'+id);
+      var remotectx = remotecanvas.getContext('2d');
+      remotectx.lineWidth = '3';
+      remotectx.beginPath();
+      remotectx.moveTo(plots[0].x, plots[0].y);
+
+      for(var i=1; i<plots.length; i++) {
+        remotectx.lineTo(plots[i].x, plots[i].y);
+      }
+      remotectx.stroke();
+    }
+
+    function draw(e) {
+      if(!isActive) return;
+
+      // cross-browser canvas coordinates
+      var x = e.offsetX || e.layerX - canvas.offsetLeft;
+      var y = e.offsetY || e.layerY - canvas.offsetTop;
+
+      plots.push({x: x, y: y});
+
+      drawOnCanvas(plots);
+    }
+    function startDraw(e) {
+      isActive = true;
+    }
+
+    function endDraw(e) {
+      isActive = false;
+      io.socket.post('/room/canvasmessage',{roomno:roomno,data:plots});
+    // empty the array
+      plots = [];
+    }
+
+    io.socket.on('canvasmessage',function(data){
+      console.log(data);
+      drawOnCanvasId(data.id,data.plot);
+    })
+
+    canvas.addEventListener('mousedown', startDraw, false);
+    canvas.addEventListener('mousemove', draw, false);
+    canvas.addEventListener('mouseup', endDraw, false);
 
     var sourcevid = document.getElementById('webrtc-sourcevid');
     var remotevid = document.getElementById('webrtc-remotevid');

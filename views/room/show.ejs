@@ -12,6 +12,13 @@
   <button type="button" id="connect">Connect</button>
   <button type="button" id="hangUp">Hang Up</button>
 </div>
+<div name="localCanvas" id="localCanvas" class="row">
+  <canvas id="lcanvas" name="lcanvas" height="200" width="200">
+  </canvas>
+  <div name="remoteCanvases" id="remoteCanvases">
+    <ul class="list-inline" id="rcanvas"></ul>
+  </div>
+</div>
 <div style="position: fixed;bottom: 0;left: 0;width: 100%;padding: 25px 0;background: #fff;">
   <div class="container">
     <div class="row">
@@ -23,6 +30,4 @@
       </form>
   </div>
 </div>
-</div>
-<div name="remoteCanvases">
 </div>
