@@ -31,7 +31,7 @@ module.exports = {
 	},
 	update: function(req,res,next){
 		console.log("update");
-		console.log(req.allParams());
+		//console.log(req.allParams());
 		sails.sockets.emit(req.param("to"),'currentcanvases',{from:req.socket.id,img:req.param("img")});
 	},
 	canvasmessage: function(req,res,next){

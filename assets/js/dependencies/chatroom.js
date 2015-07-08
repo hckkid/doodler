@@ -41,21 +41,27 @@ if (document.forms['chatbox']) {
       var html = "";
       html += '<li class="inline-list-item"><canvas id="canvas'+data.id+'" width="200" height="200"></canvas></li>';
       remoteCanvasContainer.append(html);
-      console.log(canvas.width);
-      console.log(canvas.height);
-      console.log(ctx.getImageData(0,0,canvas.width,canvas.height));
-      io.socket.post('/room/update',{to:data.id,img:ctx.getImageData(0,0,canvas.width,canvas.height)},function(data){console.log(data);});
+      //console.log(canvas.width);
+      //console.log(canvas.height);
+      //console.log(JSON.stringify(ctx.getImageData(0,0,canvas.width,canvas.height).data));
+      io.socket.post('/room/update',{to:data.id,img:canvas.toDataURL()},function(data){console.log(data);});
     });
 
     io.socket.on('currentcanvases',function(data){
       console.log("Got canvas");
-      console.log(data);
+      //console.log(data.img);
+      //console.log(JSON.parse(data.img));
       var html = "";
       html += '<li class="inline-list-item"><canvas id="canvas'+data.from+'" width="200" height="200"></canvas></li>';
       remoteCanvasContainer.append(html);
       rcan = document.getElementById('canvas'+data.from);
-      rctx = rcan.getContext;
-      rctx.putImageData(data.img,0,0);
+      rctx = rcan.getContext('2d');
+      var imgdata = rctx.createImageData(200,200);
+      var tmpimg = new Image;
+      tmpimg.onload = function(){
+        rctx.drawImage(tmpimg,0,0); // Or at whatever offset you like
+      };
+      tmpimg.src = data.img;
       //io.socket.post('update',{to:data.id,img:ctx.getImageData(0,0,canvas.width,canvas.height)});
       console.log("done");
     });
