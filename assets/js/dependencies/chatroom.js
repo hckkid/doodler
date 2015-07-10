@@ -20,7 +20,6 @@ if (document.forms['chatbox']) {
     navigator.getUserMedia = navigator.getUserMedia || navigator.mozGetUserMedia ||
                        navigator.webkitGetUserMedia || navigator.msGetUserMedia;
 
-    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || window.navigator.mozGetUserMedia || navigator.msGetUserMedia;
     window.URL = window.URL || window.webkitURL;
 
     /**
@@ -174,7 +173,6 @@ if (document.forms['chatbox']) {
     }
 
     function onMessage(evt) {
-      RTCSessionDescription = sessionDescription;
         if (evt.type === 'offer') {
           console.log("Received offer...")
           if (!started) {
@@ -205,7 +203,7 @@ if (document.forms['chatbox']) {
             peerConn.addEventListener("removestream", onRemoteStreamRemoved, false)
 
             console.log('Creating remote session description...' );
-            peerConn.setRemoteDescription(new RTCSessionDescription(evt));
+            peerConn.setRemoteDescription(new sessionDescription(evt));
             console.log('Sending answer...');
             peerConn.createAnswer(setLocalAndSendMessage, createAnswerFailed, mediaConstraints);
             createPeerConnection();
@@ -214,11 +212,12 @@ if (document.forms['chatbox']) {
         } else if (evt.type === 'answer' && started) {
           console.log('Received answer...');
           console.log('Setting remote session description...' );
-          peerConn.setRemoteDescription(new RTCSessionDescription(evt));
+          peerConn.setRemoteDescription(new sessionDescription(evt));
 
         } else if (evt.type === 'candidate' && started) {
           console.log('Received ICE candidate...');
-          var candidate = new RTCIceCandidate({sdpMLineIndex:evt.sdpMLineIndex, sdpMid:evt.sdpMid, candidate:evt.candidate});
+          var IceCandidate = window.RTCIceCandidate || window.mozRTCIceCandidate;
+          var candidate = new IceCandidate({sdpMLineIndex:evt.sdpMLineIndex, sdpMid:evt.sdpMid, candidate:evt.candidate});
           console.log(candidate);
           peerConn.addIceCandidate(candidate);
 
