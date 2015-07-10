@@ -11,6 +11,17 @@ if (document.forms['chatbox']) {
     var ctx = canvas.getContext('2d');
     ctx.lineWidth = '3';
     var remoteCanvasContainer = $('#rcanvas');
+    var peerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection ||
+                       window.webkitRTCPeerConnection || window.msRTCPeerConnection;
+
+    var sessionDescription = window.RTCSessionDescription || window.mozRTCSessionDescription ||
+                       window.webkitRTCSessionDescription || window.msRTCSessionDescription;
+
+    navigator.getUserMedia = navigator.getUserMedia || navigator.mozGetUserMedia ||
+                       navigator.webkitGetUserMedia || navigator.msGetUserMedia;
+
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || window.navigator.mozGetUserMedia || navigator.msGetUserMedia;
+    window.URL = window.URL || window.webkitURL;
 
     /**
     * Define Functions
@@ -121,8 +132,6 @@ if (document.forms['chatbox']) {
                             'OfferToReceiveVideo':true }};
     var isVideoMuted = false;
     function startVideo() {
-        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || window.navigator.mozGetUserMedia || navigator.msGetUserMedia;
-        window.URL = window.URL || window.webkitURL;
 
         navigator.getUserMedia({video: true, audio: true}, successCallback, errorCallback);
         function successCallback(stream) {
@@ -165,18 +174,43 @@ if (document.forms['chatbox']) {
     }
 
     function onMessage(evt) {
-      RTCSessionDescription = mozRTCSessionDescription;
+      RTCSessionDescription = sessionDescription;
         if (evt.type === 'offer') {
           console.log("Received offer...")
           if (!started) {
+            console.log("Creating peer connection");
+            //RTCPeerConnection = webkitRTCPeerConnection || mozRTCPeerConnection;
+            RTCPeerConnection = peerConnection;
+            var pc_config = {"iceServers":[]};
+            try {
+              peerConn = new RTCPeerConnection(pc_config);
+            } catch (e) {
+              console.log("Failed to create PeerConnection, exception: " + e.message);
+            }
+            console.log('Adding local stream...');
+            peerConn.addStream(localStream);
+
+            // when remote adds a stream, hand it on to the local video element
+            function onRemoteStreamAdded(event) {
+              console.log("Added remote stream");
+              remotevid.src = window.URL.createObjectURL(event.stream);
+            }
+
+            // when remote removes a stream, remove it from the local video element
+            function onRemoteStreamRemoved(event) {
+              console.log("Remove remote stream");
+              remotevid.src = "";
+            }
+            peerConn.addEventListener("addstream", onRemoteStreamAdded, false);
+            peerConn.addEventListener("removestream", onRemoteStreamRemoved, false)
+
+            console.log('Creating remote session description...' );
+            peerConn.setRemoteDescription(new RTCSessionDescription(evt));
+            console.log('Sending answer...');
+            peerConn.createAnswer(setLocalAndSendMessage, createAnswerFailed, mediaConstraints);
             createPeerConnection();
             started = true;
           }
-          console.log('Creating remote session description...' );
-          peerConn.setRemoteDescription(new RTCSessionDescription(evt));
-          console.log('Sending answer...');
-          peerConn.createAnswer(setLocalAndSendMessage, createAnswerFailed, mediaConstraints);
-
         } else if (evt.type === 'answer' && started) {
           console.log('Received answer...');
           console.log('Setting remote session description...' );
@@ -198,11 +232,11 @@ if (document.forms['chatbox']) {
             .on('message', onMessage);
     //io.socket.get('/room/dummy',function(data){});
 
-    function setLocalAndSendMessage(sessionDescription) {
-      peerConn.setLocalDescription(sessionDescription);
+    function setLocalAndSendMessage(currsessionDescription) {
+      peerConn.setLocalDescription(currsessionDescription);
       console.log("Sending: SDP");
-      console.log(sessionDescription);
-      io.socket.post('/message',{roomno: roomno,data:sessionDescription});
+      console.log(currsessionDescription);
+      io.socket.post('/message',{roomno: roomno,data:currsessionDescription},function(data){});
     }
 
     function createOfferFailed() {
@@ -211,24 +245,41 @@ if (document.forms['chatbox']) {
 
     function connect() {
       if (!started && localStream && channelReady) {
-        createPeerConnection();
+        console.log("Creating peer connection");
+        //RTCPeerConnection = webkitRTCPeerConnection || mozRTCPeerConnection;
+        RTCPeerConnection = peerConnection;
+        var pc_config = {"iceServers":[]};
+        try {
+          peerConn = new RTCPeerConnection(pc_config);
+        } catch (e) {
+          console.log("Failed to create PeerConnection, exception: " + e.message);
+        }
+        console.log('Adding local stream...');
+        peerConn.addStream(localStream);
+
+        // when remote adds a stream, hand it on to the local video element
+        function onRemoteStreamAdded(event) {
+          console.log("Added remote stream");
+          remotevid.src = window.URL.createObjectURL(event.stream);
+        }
+
+        // when remote removes a stream, remove it from the local video element
+        function onRemoteStreamRemoved(event) {
+          console.log("Remove remote stream");
+          remotevid.src = "";
+        }
+        peerConn.addEventListener("addstream", onRemoteStreamAdded, false);
+        peerConn.addEventListener("removestream", onRemoteStreamRemoved, false)
+
         started = true;
         peerConn.createOffer(setLocalAndSendMessage, createOfferFailed, mediaConstraints);
+        createPeerConnection();
       } else {
         alert("Local stream not running yet - try again.");
       }
     }
 
     function createPeerConnection() {
-      console.log("Creating peer connection");
-      //RTCPeerConnection = webkitRTCPeerConnection || mozRTCPeerConnection;
-      RTCPeerConnection = mozRTCPeerConnection;
-      var pc_config = {"iceServers":[]};
-      try {
-        peerConn = new RTCPeerConnection(pc_config);
-      } catch (e) {
-        console.log("Failed to create PeerConnection, exception: " + e.message);
-      }
       // send any ice candidates to the other peer
       peerConn.onicecandidate = function (evt) {
         if (evt.candidate) {
@@ -242,23 +293,6 @@ if (document.forms['chatbox']) {
           console.log("End of candidates.");
         }
       };
-      console.log('Adding local stream...');
-      peerConn.addStream(localStream);
-
-      peerConn.addEventListener("addstream", onRemoteStreamAdded, false);
-      peerConn.addEventListener("removestream", onRemoteStreamRemoved, false)
-
-      // when remote adds a stream, hand it on to the local video element
-      function onRemoteStreamAdded(event) {
-        console.log("Added remote stream");
-        remotevid.src = window.URL.createObjectURL(event.stream);
-      }
-
-      // when remote removes a stream, remove it from the local video element
-      function onRemoteStreamRemoved(event) {
-        console.log("Remove remote stream");
-        remotevid.src = "";
-      }
     }
 
     // stop the connection upon user request
