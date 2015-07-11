@@ -126,9 +126,8 @@ if (document.forms['chatbox']) {
     var peerConn = null;
     var started = false;
     var channelReady = true;
-    var mediaConstraints = {'mandatory': {
-                            'OfferToReceiveAudio':true,
-                            'OfferToReceiveVideo':true }};
+    var mediaConstraints = {'offerToReceiveAudio':true,
+                            'offerToReceiveVideo':true };
     var isVideoMuted = false;
     function startVideo() {
 
