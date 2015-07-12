@@ -126,8 +126,16 @@ if (document.forms['chatbox']) {
     var peerConn = null;
     var started = false;
     var channelReady = true;
-    var mediaConstraints = {'offerToReceiveAudio':true,
-                            'offerToReceiveVideo':true };
+    if(navigator.userAgent.indexOf("Chrome") != -1 ) 
+    var mediaConstraints;
+    {
+      console.log('Chrome');
+      mediaConstraints = { 'mandatory': {'offerToReceiveAudio':true,
+                          'offerToReceiveVideo':true }};
+    } else {
+      mediaConstraints = {'offerToReceiveAudio':true,
+                          'offerToReceiveVideo':true };
+    }
     var isVideoMuted = false;
     function startVideo() {
 
