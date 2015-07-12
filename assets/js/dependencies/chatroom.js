@@ -128,7 +128,7 @@ if (document.forms['chatbox']) {
     var channelReady = true;
     if(navigator.userAgent.indexOf("Chrome") != -1 ) 
     var mediaConstraints;
-    {
+    if(navigator.userAgent.indexOf("Chrome") != -1 ) {
       console.log('Chrome');
       mediaConstraints = { 'mandatory': {'offerToReceiveAudio':true,
                           'offerToReceiveVideo':true }};
