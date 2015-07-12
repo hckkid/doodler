@@ -177,10 +177,10 @@ if (document.forms['chatbox']) {
           if (!started) {
             console.log("Creating peer connection");
             //RTCPeerConnection = webkitRTCPeerConnection || mozRTCPeerConnection;
-            RTCPeerConnection = peerConnection;
+            //RTCPeerConnection = peerConnection;
             var pc_config = {"iceServers":[]};
             try {
-              peerConn = new RTCPeerConnection(pc_config);
+              peerConn = new peerConnection(pc_config);
             } catch (e) {
               console.log("Failed to create PeerConnection, exception: " + e.message);
             }
@@ -245,10 +245,10 @@ if (document.forms['chatbox']) {
       if (!started && localStream && channelReady) {
         console.log("Creating peer connection");
         //RTCPeerConnection = webkitRTCPeerConnection || mozRTCPeerConnection;
-        RTCPeerConnection = peerConnection;
+        //RTCPeerConnection = peerConnection;
         var pc_config = {"iceServers":[]};
         try {
-          peerConn = new RTCPeerConnection(pc_config);
+          peerConn = new peerConnection(pc_config);
         } catch (e) {
           console.log("Failed to create PeerConnection, exception: " + e.message);
         }
