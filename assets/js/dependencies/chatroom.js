@@ -51,7 +51,7 @@ if (document.forms['chatbox']) {
       console.log("joing");
       console.log(data);
       var html = "";
-      html += '<li class="inline-list-item"><canvas id="canvas'+data.id+'" width="200" height="200"></canvas></li>';
+      html += '<li class="inline-list-item"><canvas id="canvas'+data.id+'" width="1000" height="1000"></canvas></li>';
       remoteCanvasContainer.append(html);
       //console.log(canvas.width);
       //console.log(canvas.height);
