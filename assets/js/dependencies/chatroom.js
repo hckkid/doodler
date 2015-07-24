@@ -10,6 +10,8 @@ if (document.forms['chatbox']) {
     var canvas = document.getElementById('lcanvas');
     var ctx = canvas.getContext('2d');
     ctx.lineWidth = '3';
+    $('#pen_button').click(function(){ctx.lineWidth = '3';ctx.strokeStyle="Black";});
+    $('#eraser_button').click(function(){ctx.lineWidth = '9';ctx.strokeStyle="White";});
     var remoteCanvasContainer = $('#rcanvas');
     var peerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection ||
                        window.webkitRTCPeerConnection || window.msRTCPeerConnection;
@@ -119,6 +121,9 @@ if (document.forms['chatbox']) {
     canvas.addEventListener('mousedown', startDraw, false);
     canvas.addEventListener('mousemove', draw, false);
     canvas.addEventListener('mouseup', endDraw, false);
+    canvas.addEventListener('touchstart', startDraw, false);
+    canvas.addEventListener('touchmove', draw, false);
+    canvas.addEventListener('touchend', endDraw, false);
 
     var sourcevid = document.getElementById('webrtc-sourcevid');
     var remotevid = document.getElementById('webrtc-remotevid');
@@ -126,7 +131,7 @@ if (document.forms['chatbox']) {
     var peerConn = null;
     var started = false;
     var channelReady = true;
-    if(navigator.userAgent.indexOf("Chrome") != -1 ) 
+    if(navigator.userAgent.indexOf("Chrome") != -1 )
     var mediaConstraints;
     if(navigator.userAgent.indexOf("Chrome") != -1 ) {
       console.log('Chrome');
