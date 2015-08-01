@@ -20,6 +20,7 @@
  */
 
 module.exports.connections = {
+  default: 'TaiMysqlServer',
 
   /***************************************************************************
   *                                                                          *
@@ -44,6 +45,7 @@ module.exports.connections = {
     adapter: 'sails-mysql',
     host: 'localhost',
     user: 'root',
+    port: 3306,
     password: 'taikaschool',
     database: 'taikadatabase'
   },
