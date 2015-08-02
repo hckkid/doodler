@@ -54,7 +54,7 @@ module.exports = {
   	user_type: {
   		type: 'string',
       in:
-        ['teacher','student','management']
+        ['teacher','student','management'],
       required: true
   	},
 
