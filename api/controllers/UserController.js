@@ -15,14 +15,23 @@ module.exports = {
   create: function(req, res, next) {
 
     var userObj = {
+      given_id: req.param('given_id'),
       name: req.param('name'),
-      title: req.param('title'),
+      surname: req.param('surname'),
+      address: req.param('address'),
+      city: req.param('city'),
+      state: req.param('state'),
+      postal_code: req.param('postal_code'),
+      country: req.param('country'),
+      phone: req.param('phone'),
+      user_type: req.param('user_type'),
+      organization: req.param('organization'),
       email: req.param('email'),
       password: req.param('password'),
       confirmation: req.param('confirmation')
     }
 
-    // Create a User with the params sent from 
+    // Create a User with the params sent from
     // the sign-up form --> new.ejs
     User.create(userObj, function userCreated(err, user) {
 
@@ -56,7 +65,7 @@ module.exports = {
 
         // After successfully creating the user
         // redirect to the show action
-        // From ep1-6: //res.json(user); 
+        // From ep1-6: //res.json(user);
 
         res.redirect('/user/show/' + user.id);
       });
@@ -148,7 +157,7 @@ module.exports = {
         // Let other sockets know that the user instance was destroyed.
         User.publishDestroy(user.id);
 
-      });        
+      });
 
       res.redirect('/user');
 
@@ -159,17 +168,17 @@ module.exports = {
   // subscribe to the User model classroom and instances of the user
   // model
   subscribe: function(req, res) {
- 
+
     // Find all current users in the user model
     User.find(function foundUsers(err, users) {
       if (err) return next(err);
- 
+
       // subscribe this socket to the User model classroom
       User.subscribe(req.socket);
- 
+
       // subscribe this socket to the user instance rooms
       User.subscribe(req.socket, users);
- 
+
       // This will avoid a warning from the socket for trying to render
       // html over the socket.
       res.send(200);

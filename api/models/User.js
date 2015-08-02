@@ -12,14 +12,55 @@ module.exports = {
 
   attributes: {
 
+    given_id: {
+      type: 'string',
+      required: true,
+      unique: true
+    },
+
   	name: {
   		type: 'string',
   		required: true
   	},
 
-  	title: {
-  		type: 'string'
+    surname: {
+      type: 'string'
+    },
+
+    address: {
+      type: 'string'
+    },
+
+    city: {
+      type: 'string'
+    },
+
+    state:{
+      type: 'string'
+    },
+
+    postal_code: {
+      type: 'int'
+    },
+
+    country: {
+      type: 'string'
+    },
+
+    phone: {
+      type: 'string'
+    },
+
+  	user_type: {
+  		type: 'string',
+      in:
+        ['teacher','student','management']
+      required: true
   	},
+
+    organization: {
+      type: 'string'
+    },
 
   	email: {
   		type: 'email',

@@ -9,27 +9,79 @@
 	</ul>
 	<% } %>
 
-	
 	<div class="control-group">
-	<input type="text" class="form-control" placeholder="your name" name="name">
+	<input type="text" class="form-control" placeholder="Organization Name" name="organization">
 	</div>
+	<br />
 
 	<div class="control-group">
-	<input type="text" class="form-control" placeholder="your title" name="title">
+	<input type="text" class="form-control" placeholder="Assigned ID" name="given_id">
 	</div>
-	
+	<br />
+
+	<div class="control-group">
+	<input type="text" class="form-control" placeholder="First Name" name="name">
+	</div>
+	<br />
+
+	<div class="control-group">
+	<input type="text" class="form-control" placeholder="Last Name" name="surname">
+	</div>
+	<br />
+
+	<div class="control-group">
+	<input type="text" class="form-control" placeholder="Address" name="address">
+	</div>
+	<br />
+
+	<div class="control-group">
+	<input type="text" class="form-control" placeholder="City" name="city">
+	</div>
+	<br />
+
+	<div class="control-group">
+	<input type="text" class="form-control" placeholder="State" name="state">
+	</div>
+	<br />
+
+	<div class="control-group">
+	<input type="text" class="form-control" placeholder="Zip Code" name="postal_code">
+	</div>
+	<br />
+
+	<div class="control-group">
+	<input type="text" class="form-control" placeholder="Country" name="country">
+	</div>
+	<br />
+
+	<div class="control-group">
+	<input type="text" class="form-control" placeholder="Phone No." name="phone">
+	</div>
+	<br />
+
+
 	<div class="control-group">
 	<input type="text" class="form-control" placeholder="email address" name="email">
 	</div>
+	<br />
 
 	<div class="control-group">
 	<input type="password" class="form-control" placeholder="password" name="password" id="password">
 	</div>
+	<br />
 
 	<div class="control-group">
 	<input type="password" class="form-control" placeholder="password confirmation" name="confirmation">
-	<br />
 	</div>
+	<br />
+
+	<div class="control-group">
+	<input type="radio" class="form-control" name="user_type" value="student" checked="true">student<br />
+	<input type="radio" class="form-control" name="user_type" value="teacher">teacher<br />
+	<input type="radio" class="form-control" name="user_type" value="management">management<br />
+	</div>
+	<br />
+
 
 	<input type="submit" class="btn btn-lg btn-primary btn-block" value="Create Account"/>
 	<input type="hidden" name="_csrf" value="<%= _csrf %>" />
