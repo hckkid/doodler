@@ -122,10 +122,14 @@ module.exports.sockets = {
   * disconnects                                                              *
   *                                                                          *
   ***************************************************************************/
-  // afterDisconnect: function(session, socket, cb) {
-  //   // By default: do nothing.
-  //   return cb();
-  // },
+  afterDisconnect: function(session, socket, cb) {
+    //console.log(sails.sockets.socketRooms(socket));
+    //console.log(sails.controllers);
+    sails.controllers.rpi.disconnect(socket);
+    //sails.socket.broadcast('rpidevices','disconnected',{'id':socket.id});
+    // By default: do nothing.
+    return cb();
+  },
 
   /***************************************************************************
   *                                                                          *

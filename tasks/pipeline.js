@@ -30,13 +30,13 @@ var jsFilesToInject = [
   'js/dependencies/jquery.js',
   'js/dependencies/jquery.validate.min.js',
   'js/dependencies/underscore.js',
-  'js/dependencies/pdf.js',
-  'js/dependencies/pdf.worker.js',
+  //'js/dependencies/pdf.js',
+  //'js/dependencies/pdf.worker.js',
   'js/dependencies/**/*.js',
-
+  'js/rpi/**/*.js',
   // All of the rest of your client-side js files
   // will be injected here in no particular order.
-  'js/**/*.js'
+  //'js/**/*.js'
 ];
 
 

@@ -20,7 +20,7 @@
  */
 
 module.exports.connections = {
-  default: 'TaiMysqlServer',
+  default: 'localDiskDb',
 
   /***************************************************************************
   *                                                                          *

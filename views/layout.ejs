@@ -4,7 +4,7 @@
     <title>New Sails App</title>
 
     <!-- Viewport mobile tag for sensible mobile support -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
 
     <!--
@@ -34,14 +34,14 @@
     <!--STYLES END-->
     <script type="text/javascript">
         window.overlord = { csrf: "<%= _csrf %>" };
-      </script>
+    </script>
 
       <!-- The sound file tht will play on activity events -->
-      <audio id="chatAudio">
+      <!-- <audio id="chatAudio">
         <source src="/sounds/notify.ogg" type="audio/ogg">
         <source src="/sounds/notify.mp3" type="audio/mpeg">
         <source src="/sounds/notify.wav" type="audio/wav">
-      </audio>
+      </audio> -->
 
     </head>
 
@@ -146,14 +146,15 @@
     <script src="/js/dependencies/jquery.js"></script>
     <script src="/js/dependencies/jquery.validate.min.js"></script>
     <script src="/js/dependencies/underscore.js"></script>
-    <script src="/js/dependencies/pdf.js"></script>
-    <script src="/js/dependencies/pdf.worker.js"></script>
+    <script src="/js/dependencies/angular.js"></script>
     <script src="/js/dependencies/bootstrap.js"></script>
     <script src="/js/dependencies/chatroom.js"></script>
     <script src="/js/dependencies/compatibility.js"></script>
     <script src="/js/dependencies/customValidate.js"></script>
-    <script src="/js/dependencies/hello.js"></script>
+    <script src="/js/dependencies/fabric.js"></script>
     <script src="/js/dependencies/joinroom.js"></script>
+    <script src="/js/rpi/rpiapp.js"></script>
+    <script src="/js/rpi/test.js"></script>
     <!--SCRIPTS END-->
   </body>
 </html>

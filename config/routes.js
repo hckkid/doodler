@@ -46,6 +46,11 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/message': 'RoomController.message'
+  '/message': 'RoomController.message',
+
+  '/joinrpi': 'RpiController.join',
+  '/rpidevices': 'RpiController.devices',
+  '/rpimessage': 'RpiController.deploy',
+  '/watchrpi': 'RpiController.watcher'
 
 };

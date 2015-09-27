@@ -1,9 +1,40 @@
-<div class="container">
+<!-- <div class="container">
   <div class="jumbotron">
     <h1>activityOverlord</h1>
 
     <h2>...tracking app activity better than the NSA since 1899.</h2>
     <a href="/user/new" class="btn btn-lg btn-success">Sign up now!</a>
   </div>
-  <canvas id="the-canvas" style="border:1px solid black;"/>
-</div>
+</div> -->
+<html ng-app="rpiapp">
+  <!--STYLES-->
+  <link rel="stylesheet" href="/styles/bootstrap.css">
+  <link rel="stylesheet" href="/styles/importer.css">
+  <!--STYLES END-->
+  <body>
+    <div ng-controller="rpidevices as rdevices">
+      <ul>
+            <li ng-repeat="device in devices">
+              {{device.id}}
+              <input type="text" ng-model="device.message" name="message_input" placeholder="Message To Deploy" />
+              <input type="button" value="Deploy" ng-click="rdevices.deployMessage(device)"/>
+            </li>
+          </ul>
+    </div>
+  </body>
+  <!--SCRIPTS-->
+  <script src="/js/dependencies/sails.io.js"></script>
+  <script src="/js/dependencies/jquery.js"></script>
+  <script src="/js/dependencies/jquery.validate.min.js"></script>
+  <script src="/js/dependencies/underscore.js"></script>
+  <script src="/js/dependencies/angular.js"></script>
+  <script src="/js/dependencies/bootstrap.js"></script>
+  <script src="/js/dependencies/chatroom.js"></script>
+  <script src="/js/dependencies/compatibility.js"></script>
+  <script src="/js/dependencies/customValidate.js"></script>
+  <script src="/js/dependencies/fabric.js"></script>
+  <script src="/js/dependencies/joinroom.js"></script>
+  <script src="/js/rpi/rpiapp.js"></script>
+  <script src="/js/rpi/test.js"></script>
+  <!--SCRIPTS END-->
+</html>
